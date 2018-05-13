@@ -1,0 +1,103 @@
+<ui:composition 
+    template="/home.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="data">
+
+        <f:view>
+            <h:form id="frmBodega">
+
+                <p:messages id="messages" showDetail="true" autoUpdate="true" />
+
+                <p:panel id="pnlBodega" header="Creación de Bodegas">
+                    <p:panelGrid columns="2">
+
+                        <h:outputLabel value="Codigo *" for="inptCodigo"/>
+                        <p:inputText id="inptCodigo" value="#{bodegaMB.bodegaSelected.codigo}" required="true" maxlength="50" title="Codigo de la bodega" disabled="true"/>
+
+                        <h:outputLabel value="Nombre *" for="inptNombre"/>
+                        <p:inputText id="inptNombre" value="#{bodegaMB.bodegaSelected.nombre}" required="true" maxlength="50" title="Nombre de la bodega" />
+
+                        <h:outputLabel value="Direccion *" for="inptDireccion"/>
+                        <p:inputText id="inptDireccion" value="#{bodegaMB.bodegaSelected.direccion}" required="true" maxlength="50" title="direccion o zona de la bodega" />
+
+                        <h:outputLabel value="Telefono *" for="inptTelefono"/>
+                        <p:inputText id="inptTelefono" value="#{bodegaMB.bodegaSelected.telefono}" required="true" maxlength="50" title="Telefono de contacto para contactar al supervisor de la bodega" />
+
+
+                        <h:outputLabel value="Estado" for="inptType"/>
+                        <p:selectOneMenu id="inptType">
+                            <f:selectItem itemLabel="Seleccione" itemValue="Seleccione"/>
+                            <f:selectItem itemLabel="Activo" itemValue="Activo" />
+                            <f:selectItem itemLabel="Inactivo" itemValue="Inactivo"/>
+                        </p:selectOneMenu>
+
+                        <p:commandButton value="Guardar"
+                                         icon="ui-icon-disk" actionListener="#{bodegaMB.guardarBodega()}"  update=":bodegaListFrm:dtBodegas,:frmBodega:pnlBodega"/>
+
+                        <p:commandButton value="Limpiar" 
+                                         icon="ui-icon-trash" action="#{bodegaMB.limpiar()}" update=":frmBodega:pnlBodega"/>
+
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+
+
+            <p:separator />
+
+            <h:form id="bodegaListFrm">
+
+                <p:panel header="Listado de Bodegas">
+                    <p:dataTable 
+                        id="dtBodegas"
+                        value="#{bodegaMB.lstBodega}"
+                        var="bodega"
+                        rowKey="#{bodega.codigo}"
+                        selection="#{bodegaMB.bodegaSelected}"
+                        paginator="true" 
+                        rowsPerPageTemplate="10,20,30,40,50"
+                        selectionMode="single" rows="5">
+
+                        <p:column headerText="Codigo">
+                            <p:outputLabel value="#{bodega.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="NombreBodega">
+                            <p:outputLabel value="#{bodega.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Direccion">
+                            <p:outputLabel value="#{bodega.direccion}" />
+                        </p:column>
+
+                        <p:column headerText="Telefono">
+                            <p:outputLabel value="#{bodega.telefono}" />
+                        </p:column>
+
+                        <p:column headerText="Estado">
+                            <p:outputLabel value="" />
+                        </p:column>
+
+                        <p:column headerText="Ubicacion">
+                            <p:outputLabel value="" />
+                        </p:column>
+
+                        <p:column headerText="Acciones">
+                            <p:commandButton  value="Editar" icon="ui-icon-pencil" update=":frmBodega:pnlBodega">
+                                <f:setPropertyActionListener value="#{bodega}" target="#{bodegaMB.bodegaSelected}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+            </h:form>
+
+        </f:view>
+
+    </ui:define>
+</ui:composition>

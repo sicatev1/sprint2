@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>SICATE</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="120" resizable="true" closable="true" collapsible="true">
+                    <img src="image/logosicate.png" width="250" height="120" alt="sicate"/>
+                   
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Proyecto final de la asignatura "Ingenieria de software 3"
+                    <p:outputLabel value="Creado por:" /><br/>
+                    <p:outputLabel value="Erick Pulido Neira " /><br/>
+                    <p:outputLabel value="Maria del Pilar" /><br/>
+                    <p:outputLabel value="Jose Luis" /><br/>
+                    <p:outputLabel value="Daniel Calvo" /><br/>
+                    <p:outputLabel value="Cristian Gomez Ruiz" /><br/>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="255" header="Menu" collapsible="true">
+                    <p:menu>
+
+                        <p:submenu label="Entrega Eficiente">
+                            <p:menuitem value="Pagina Principal" 
+                                        icon="ui-icon-home" outcome="home" />
+                            <p:menuitem value="Gestionar Bodegas" 
+                                        icon="ui-icon-image" outcome="bodega" />
+                            <p:menuitem value="Crear Ruta" 
+                                        icon="ui-icon-image" outcome="ruta" />
+                            <p:menuitem value="Consultar Ruta" 
+                                        icon="ui-icon-image" outcome="consultaruta" />
+                            <p:menuitem value="Gestionar Paquete" 
+                                        icon="ui-icon-image" outcome="paquete" />
+                            <p:menuitem value="#{bundle.pnlTrazaPaquete}" 
+                                        icon="ui-icon-image" outcome="trazapaquete" />
+                        </p:submenu>
+                    </p:menu>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <ui:insert name="data" />
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

@@ -37,6 +37,8 @@ public class CrearRutaBEAN {
     private IResponsePaqueteLogic controlresponsePaquete;
     private List<ResponsePaquete> paquetes;
     private MapModel draggableModel;
+    private String rutas;
+    private boolean estadoMapa;
 
 //    LatLng coordInit;
     String coordInit;
@@ -44,7 +46,9 @@ public class CrearRutaBEAN {
     @PostConstruct
     public void init() {
         
-        coordInit = "3.4516467, -76.5319854";
+        estadoMapa=true;
+
+        rutas = "";
         bodegaSelected = 0;
         paquetes = new ArrayList<>();
         controlBodega = new ControlaBodega();
@@ -59,17 +63,21 @@ public class CrearRutaBEAN {
             if (paquetes == null || paquetes.isEmpty()) {
                 FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No hay paquetes para esta bodega", "");
                 FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+                rutas = "";
+                estadoMapa=true;
             } else {
-                cargarMapa();
-
+                rutas = loadRoute();
+                estadoMapa=false;
             }
         } else {
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe seleccionar una bodega", "");
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+            estadoMapa=true;
         }
 
     }
 
+    /*
     public void cargarMapa() {
         for (ResponsePaquete objeto : paquetes) {
             String[] latlng = objeto.getCoordenada().split(",");
@@ -82,13 +90,16 @@ public class CrearRutaBEAN {
             premarker.setDraggable(true);
         }
         editCoordenadaInit();
-    }
+    }*/
 
-    public void editCoordenadaInit() {
-
-        coordInit = paquetes.get(0).getCoordenada() + "," + paquetes.get(paquetes.size() - 1).getCoordenada();
+    public String loadRoute() {
+        String result = "";
+        for (ResponsePaquete obj : paquetes) {
+            
+            result += obj.getCoordenada()+"|";
+        }
+        return result;
         
-
     }
 
     public List<SelectItem> getComboBodegas() {
@@ -146,5 +157,24 @@ public class CrearRutaBEAN {
     public void setCoordInit(String coordInit) {
         this.coordInit = coordInit;
     }
+
+    public String getRutas() {
+        return rutas;
+    }
+
+    public void setRutas(String rutas) {
+        this.rutas = rutas;
+    }
+
+    public boolean isEstadoMapa() {
+        return estadoMapa;
+    }
+
+    public void setEstadoMapa(boolean estadoMapa) {
+        this.estadoMapa = estadoMapa;
+    }
+    
+    
+    
 
 }

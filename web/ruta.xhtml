@@ -24,8 +24,8 @@
 
 
                         <p:commandButton value="Cargar Paquetes"
-                                         icon="ui-icon-disk" actionListener="#{crearRutaBEAN.cargarPaquetes()}"  update=":bodegaListFrm:dtPaquetes , :mapa:gmap" >
-                            
+                                         icon="ui-icon-disk" actionListener="#{crearRutaBEAN.cargarPaquetes()}"  update=":bodegaListFrm:dtPaquetes ,:forMapa:rutasPaquetes , :forMapa:cargarMapa" >
+
                         </p:commandButton>
 
                         <p:commandButton value="Limpiar" 
@@ -74,47 +74,24 @@
             </h:form>
             <p:separator></p:separator>
 
-            <h:form id="mapa">      
+            <h:form id="forMapa"> 
+                <p:commandButton id="cargarMapa"  onclick="ruta()" value=" Cargar Mapa" disabled="#{crearRutaBEAN.estadoMapa}"></p:commandButton>
 
+                <div id="map" style="height: 400px"></div>
 
-                <p:gmap id="gmap" center="#{crearRutaBEAN.coordInit}" zoom="13" type="roadmap" model="#{crearRutaBEAN.draggableModel}" style="width:100%;height:400px" fitBounds="true">
-
-                </p:gmap>
+                <h:inputHidden id="rutasPaquetes" value="#{crearRutaBEAN.rutas}" /> 
+                -->
             </h:form>
-            <!--
+            <!---->
+
             <script type ="text/javascript">
-                //Calcula la ruta con los valores ingresados
-                function calculateAndDisplayRoute() {
-                    var directionsService = new google.maps.DirectionsService;
-                    var directionsDisplay = new google.maps.DirectionsRenderer;
-                    var map = new google.maps.Map(document.getElementById('mapa'));
-                    directionsDisplay.setMap(map);
-                   /* var temp = origin.split("|");
-                    var origen = ""+temp[0]+","+temp[1];
-                    
-                     temp = destination.split("|");
-                    var destino = ""+temp[0]+","+temp[1];*/
-                    var origen = 3.4516467, -76.5319854;
-                    var destino= 3.4516467, -76.5319854 ;
-                    //Se crea la ruta a partir de los datos
-                    directionsService.route({
-                        origin: origen,
-                        destination: destino,
-                        //waypoints: waypts3,
-                        optimizeWaypoints: true,
-                        travelMode: 'DRIVING'
-                    }, function (response, status) {
-                        if (status === 'OK') {
-                            directionsDisplay.setDirections(response);
-                            var route = response.routes[0];
-                        } else {
-                            window.alert('Directions request failed due to ' + status);
-                        }
-                    });
+                function ruta() {
+
+                    var destinos = document.getElementById("forMapa:rutasPaquetes").value;
+                    calculateAndDisplayRoute(destinos);
+
                 }
-            </script>-->
-
-
+            </script>
         </f:view>
 
     </ui:define>

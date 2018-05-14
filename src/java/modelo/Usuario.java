@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 public class Usuario implements Serializable {
 
+    private String codigo;
     private String nombre;
     private String apellido;
     private String cedula;
@@ -20,13 +21,23 @@ public class Usuario implements Serializable {
 
     }
 
-    public Usuario(String nombre, String apellido, String cedula, String password, String rol, String estado) {
+    public Usuario(String codigo, String nombre, String apellido, String cedula, String password, String estado, String rol) {
+        this.codigo = codigo;
         this.nombre = nombre;
         this.apellido = apellido;
         this.cedula = cedula;
         this.password = password;
-        this.rol = rol;
         this.estado = estado;
+        this.rol = rol;
+        
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {

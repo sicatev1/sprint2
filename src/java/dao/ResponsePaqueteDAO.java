@@ -28,9 +28,11 @@ public class ResponsePaqueteDAO implements IResponsePaqueteDAO {
 
         ResultSet rs = null;
         Statement s = null;
-        String sql = "select destinatarios.coordenadas 'coordenada' , destinatarios.nombre 'nombre_destinatario' , destinatarios.direccion 'direccion_paquete' , destinatarios.telefono from paquetes inner join bodegas on paquetes.bodegas_idbodega = bodegas.idbodega \n"
-                + "inner join destinatarios on destinatarios.iddestinatario = paquetes.destinatario_idtable1\n"
-                + "where paquetes.estado = 1 and bodegas.idbodega = " + idBodega + " ";
+        String sql = "select destinatarios.coordenadas 'coordenada' , destinatarios.nombre 'nombre_destinatario' , "
+                + "destinatarios.direccion 'direccion_paquete' , destinatarios.telefono from paquetes inner join bodegas on "
+                + "paquetes.bodega = bodegas.idbodega inner join destinatarios on "
+                + "destinatarios.iddestinatario = paquetes.destinatario where paquetes.estado = 1 "
+                + "and bodegas.idbodega = " + idBodega + " ";
         try {
 
             s = ConexionSingleton.getInstancia().getConexion().createStatement();

@@ -13,8 +13,11 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import modelo.Paquete;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.model.SelectItem;
 import logicaNegocio.interfaces.IControlaBodega;
 import logicaNegocio.interfaces.IControlaPaquete;
 import logicaNegocio.interfaces.IControlaPersona;
@@ -40,7 +43,6 @@ public class PaqueteMB {
     private Paquete paquete;
     private Bodega bodega;
     private List<Paquete> lstPaquete;
-    private List<Bodega> lstBodega;
     private List<Remitente> lstRemitente;
     private List<Destinatario> lstDestinatario;
     private List<PaquetesDTO> lstPaqueteDTO;
@@ -61,13 +63,19 @@ public class PaqueteMB {
     private String coordenadas;
     //Datos paquete
     private String guia;
-    private String fecha_entrega;
+    private Date fecha_entrega;
     private Integer cod_paquete;
+    
+     private List<SelectItem> comboBodegas;
+     private int bodegaSelected;
+    
 
     @PostConstruct
     public void init() {
         paqueteSelected = new PaquetesDTO();
         lstPaqueteDTO = new ArrayList<>();
+        comboBodegas = utilidades.UtilCombos.getComboBodega(controlaBodega);
+        utilFecha = new UtilFecha();
         consultarPaquetes();
     }
 
@@ -79,20 +87,18 @@ public class PaqueteMB {
         try {
 
             remitente = new Remitente(codigoRem, nombreRem, identificacionRem, direccionRem, telefonoRem, ciudadRem);
-            destinatario = new Destinatario(codigoDes, nombreDes, identificacionDes, direccionDes, telefonoDes, ciudadDes, coordenadas);
-
-
+            destinatario = new Destinatario(codigoDes, nombreDes, identificacionDes, direccionDes, telefonoDes, ciudadDes, "falta coordenada");
 
             boolean guardoRem = controlaPersonaInterface.guardarRemitente(remitente);
             boolean guardoDes = controlaPersonaInterface.guardarDestinatario(destinatario);
 
-            lstRemitente = controlaPersonaInterface.consultarRemitente("WHERE IDENTIFICACION= " + identificacionRem);
-            lstDestinatario = controlaPersonaInterface.consultarDestinatario("WHERE IDENTIFICACION= " + identificacionDes);
+            lstRemitente = controlaPersonaInterface.consultarRemitente(" WHERE IDENTIFICACION= " + identificacionRem);
+            lstDestinatario = controlaPersonaInterface.consultarDestinatario(" WHERE IDENTIFICACION= " + identificacionDes);
 
 
             if (guardoRem && guardoDes) {
                 String fechaActual = utilFecha.obtenerFechaActualString();
-                paquete = new Paquete(guia, utilFecha.convertirStringaDate(fecha_entrega), utilFecha.convertirStringaDate(fechaActual), "1", null, null, Integer.parseInt(bodega.getCodigo()));
+                paquete = new Paquete(guia, fecha_entrega, Calendar.getInstance().getTime(), "1", null, null, Integer.parseInt(""+bodegaSelected));
 
                 for (Remitente remitente : lstRemitente) {
                     paquete.setRemitente(remitente.getCodigo());
@@ -141,7 +147,7 @@ public class PaqueteMB {
     //Datos paquete
     cod_paquete=paqueteSelected.getCodPaquete();
     guia=paqueteSelected.getGuia();
-    fecha_entrega=paqueteSelected.getFecha_entrega();
+//    fecha_entrega=  paqueteSelected.getFecha_entrega();
     
     }
     
@@ -179,11 +185,6 @@ public class PaqueteMB {
         }
         
         
-    }
-
-    public void consultarBodegas() {
-
-        lstBodega = controlaBodega.consultarBodegas();
     }
 
     public String getCiudadDes() {
@@ -234,11 +235,11 @@ public class PaqueteMB {
         this.direccionRem = direccionRem;
     }
 
-    public String getFecha_entrega() {
+    public Date getFecha_entrega() {
         return fecha_entrega;
     }
 
-    public void setFecha_entrega(String fecha_entrega) {
+    public void setFecha_entrega(Date fecha_entrega) {
         this.fecha_entrega = fecha_entrega;
     }
 
@@ -354,13 +355,7 @@ public class PaqueteMB {
         this.bodega = bodega;
     }
 
-    public List<Bodega> getLstBodega() {
-        return lstBodega;
-    }
-
-    public void setLstBodega(List<Bodega> lstBodega) {
-        this.lstBodega = lstBodega;
-    }
+  
 
     public Integer getCod_paquete() {
         return cod_paquete;
@@ -369,6 +364,24 @@ public class PaqueteMB {
     public void setCod_paquete(Integer cod_paquete) {
         this.cod_paquete = cod_paquete;
     }
+
+    public List<SelectItem> getComboBodegas() {
+        return comboBodegas;
+    }
+
+    public void setComboBodegas(List<SelectItem> comboBodegas) {
+        this.comboBodegas = comboBodegas;
+    }
+
+    public int getBodegaSelected() {
+        return bodegaSelected;
+    }
+
+    public void setBodegaSelected(int bodegaSelected) {
+        this.bodegaSelected = bodegaSelected;
+    }
+    
+    
     
     
     

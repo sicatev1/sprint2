@@ -32,7 +32,7 @@ public class PersonaDAO implements IPersonaDAO {
         
         ResultSet rs = null;
         Statement s = null;
-        String sql = "select codigo, nombre,identificacion,direccion,telefono,ciudad from REMITENTES"+where;
+        String sql = "select idremitente, nombre,identificacion,direccion,telefono,ciudad from REMITENTES"+where;
         try {
             
             System.out.println("consultando todos los remitentes : consultarTodosRemitente()");
@@ -47,7 +47,7 @@ public class PersonaDAO implements IPersonaDAO {
             String direccion = "";
             
             while (rs.next()) {
-                codigo = rs.getInt("codigo");
+                codigo = rs.getInt("idremitente");
                 nombre = rs.getString("nombre");
                 identificacion = rs.getInt("identificacion");
                 ciudad = rs.getString("ciudad");
@@ -70,7 +70,7 @@ public class PersonaDAO implements IPersonaDAO {
             
         } finally {
             try {
-                s.close();
+//                s.close();
                 rs.close();
             } catch (Exception ex) {
                 Logger.getLogger(PersonaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,7 +82,8 @@ public class PersonaDAO implements IPersonaDAO {
     
     public boolean guardarRemitenteDB(Remitente remitente) {
         
-        String insert = "insert into REMITENTE (codigo,nombre,identificacion,direccion,telefono,ciudad) values(?,?,?,?,?,?)";
+        String insert = "insert into REMITENTES (nombre,identificacion,direccion,telefono,ciudad) values(?,?,?,?,?)";
+        System.out.println("insertando remitente");
         
         FileInputStream fis = null;
         PreparedStatement ps = null;
@@ -90,12 +91,11 @@ public class PersonaDAO implements IPersonaDAO {
             ConexionSingleton.getInstancia().getConexion().setAutoCommit(false);
             
             ps = ConexionSingleton.getInstancia().getConexion().prepareStatement(insert);
-            ps.setInt(1, remitente.getCodigo());
-            ps.setString(2, remitente.getNombre());
-            ps.setInt(3, remitente.getIdentificacion());
-            ps.setString(4, remitente.getDireccion());
-            ps.setString(5, remitente.getTelefono());
-            ps.setString(6, remitente.getCiudad());
+            ps.setString(1, remitente.getNombre());
+            ps.setInt(2, remitente.getIdentificacion());
+            ps.setString(3, remitente.getDireccion());
+            ps.setString(4, remitente.getTelefono());
+            ps.setString(5, remitente.getCiudad());
             
             ps.executeUpdate();
             ConexionSingleton.getInstancia().getConexion().commit();
@@ -105,7 +105,6 @@ public class PersonaDAO implements IPersonaDAO {
         } finally {
             try {
                 ps.close();
-                fis.close();
             } catch (Exception ex) {
                 Logger.getLogger(PersonaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -193,7 +192,7 @@ public class PersonaDAO implements IPersonaDAO {
         } finally {
             try {
                 ps.close();
-                fis.close();
+//                fis.close();
             } catch (Exception ex) {
                 Logger.getLogger(PersonaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -208,7 +207,7 @@ public class PersonaDAO implements IPersonaDAO {
         
         ResultSet rs = null;
         Statement s = null;
-        String sql = "select codigo,nombre,identificacion,direccion,coordenadas,telefono,ciudad from DESTINATARIO";
+        String sql = "select iddestinatario,nombre,identificacion,direccion,coordenadas,telefono,ciudad from DESTINATARIOS";
         
         if(sqlWhere != null && !sqlWhere.isEmpty()){
             sql = sql+sqlWhere;
@@ -229,7 +228,7 @@ public class PersonaDAO implements IPersonaDAO {
             String direccion = "";
             
             while (rs.next()) {
-                codigo= rs.getInt("codigo");
+                codigo= rs.getInt("iddestinatario");
                 nombre = rs.getString("nombre");
                 identificacion = rs.getInt("identificacion");
                 ciudad = rs.getString("ciudad");
@@ -252,7 +251,7 @@ public class PersonaDAO implements IPersonaDAO {
             
         } finally {
             try {
-                s.close();
+//                s.close();
                 rs.close();
             } catch (Exception ex) {
                 Logger.getLogger(PersonaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,7 +265,7 @@ public class PersonaDAO implements IPersonaDAO {
     @Override
     public boolean guardarDestinatarioDB(Destinatario destinatario) {
         
-        String insert = "insert into DESTINATARIO (nombre,identificacion,direccion,coordenadas,telefono,ciudad) values(?,?,?,?,?,?)";
+        String insert = "insert into DESTINATARIOS (nombre,identificacion,direccion,coordenadas,telefono,ciudad) values(?,?,?,?,?,?)";
         
         FileInputStream fis = null;
         PreparedStatement ps = null;
@@ -289,7 +288,6 @@ public class PersonaDAO implements IPersonaDAO {
         } finally {
             try {
                 ps.close();
-                fis.close();
             } catch (Exception ex) {
                 Logger.getLogger(PersonaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -21,8 +21,8 @@
 
                         <p:panelGrid columns="2">
 
-                             <p:outputLabel value="# Codigo:  " for="inpguia"  />
-                             <p:inputText id="inpguia" maxlength="50" value="#{paqueteMB.cod_paquete}" />
+                             <p:outputLabel value="# Codigo:  " for="inpCodigo"  />
+                             <p:inputText id="inpCodigo" maxlength="50" value="#{paqueteMB.cod_paquete}" />
                             
                             <p:outputLabel value="# Guia(*):  " for="inpguia"  />
                             <p:inputText id="inpguia" required="true" maxlength="50" value="#{paqueteMB.guia}" />
@@ -31,10 +31,9 @@
                             <p:calendar id="calfechentre"  showOn="button" value="#{paqueteMB.fecha_entrega}" />
 
                             <p:outputLabel value="# Bodega(*):  " for="seloneBog"  />
-
-                            <p:selectOneMenu id="seloneBog" value="#{paqueteMB.lstBodega}" effect="fold" var="bod" >
-                                <f:selectItem itemLabel="Seleccione" itemValue="" />
-                                <f:selectItems value="#{paqueteMB.bodega}" itemValue="#{bod.codigo}" itemLabel="#{bod.nombre}" />
+                            <p:selectOneMenu id="seloneBog" value="#{paqueteMB.bodegaSelected}" effect="fold" var="bod" >
+                                <f:selectItem itemLabel="Seleccione" itemValue="-1" />
+                                <f:selectItems value="#{paqueteMB.comboBodegas}" />
                             </p:selectOneMenu>
 
 
@@ -82,13 +81,13 @@
                                 <p:inputText id="inpIdDes" required="true" maxlength="10" value="#{paqueteMB.identificacionDes}"/>
 
                                 <p:outputLabel value="Ciudad(*):  " for="inpCiuDes"  />
-                                <p:inputText id="inpCiuDes" required="true" maxlength="50" value="#{paqueteMB.ciudadRem}"/>
+                                <p:inputText id="inpCiuDes" required="true" maxlength="50" value="#{paqueteMB.ciudadDes}"/>
 
                                 <p:outputLabel value="Direccion(*):  " for="inpDirDes"  />
-                                <p:inputText id="inpDirDes" required="true" maxlength="60" value="#{paqueteMB.direccionRem}" />
+                                <p:inputText id="inpDirDes" required="true" maxlength="60" value="#{paqueteMB.direccionDes}" />
 
                                 <p:outputLabel value="Telefono(*):  " for="inpTelDes"  />
-                                <p:inputMask id="inpTelDes" mask="(999) 999-9999" rendered="true" value="#{paqueteMB.telefonoRem}"/>
+                                <p:inputMask id="inpTelDes" mask="(999) 999-9999" rendered="true" value="#{paqueteMB.telefonoDes}"/>
 
                                 <p:outputLabel value="Coordenadas(*):  " for="inpCorDes"  />
                                 <p:inputText id="inpCorDes" required="true" maxlength="60" disabled="true" value="#{paqueteMB.coordenadas}" />

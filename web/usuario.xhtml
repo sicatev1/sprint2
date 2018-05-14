@@ -1,0 +1,113 @@
+<ui:composition 
+    template="/home.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="data">
+
+        <f:view>
+            <h:form id="frmUsuario">
+
+                <p:messages id="messages" showDetail="true" autoUpdate="true" />
+
+                <p:panel id="pnlUsuario" header="Creación de Usuario">
+                    <p:panelGrid columns="2">
+
+                        <h:outputLabel value="Codigo *" for="inptCodigo"/>
+                        <p:inputText id="inptCodigo" value="#{usuarioMB.usuarioSelected.codigo}" required="true" maxlength="50" title="Codigo del Usuario" disabled="true"/>
+
+                        <h:outputLabel value="Nombre *" for="inptNombre"/>
+                        <p:inputText id="inptNombre" value="#{usuarioMB.usuarioSelected.nombre}" required="true" maxlength="50" title="Nombre del Usuario" />
+
+                        <h:outputLabel value="Apellido *" for="inptApellido"/>
+                        <p:inputText id="inptApellido" value="#{usuarioMB.usuarioSelected.apellido}" required="true" maxlength="50" title="Apellido del Usuario" />
+
+                        <h:outputLabel value="Cedula *" for="inptCedula"/>
+                        <p:inputText id="inptCedula" value="#{usuarioMB.usuarioSelected.cedula}" required="true" maxlength="50" title="Cedula del Usuario" />
+
+                        <h:outputLabel value="Password *" for="inptPassword"/>
+                        <p:password id="inptPassword" value="#{usuarioMB.usuarioSelected.password}" required="true" maxlength="50" title="Contraseña para del Usuario"/>
+
+                        <h:outputLabel value="Estado" for="inptEstado"/>
+                        <p:selectOneMenu id="inptEstado" value="#{usuarioMB.usuarioSelected.estado}">
+                            <f:selectItem itemLabel="Seleccione" itemValue="-1"/>
+                            <f:selectItem itemLabel="Activo" itemValue="A" />
+                            <f:selectItem itemLabel="Inactivo" itemValue="I"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Rol" for="inptRol"/>
+                        <p:selectOneMenu id="inptRol" value="#{usuarioMB.usuarioSelected.rol}">
+                            <f:selectItem itemLabel="Seleccione" itemValue="-1"/>
+                            <f:selectItem itemLabel="Administrador" itemValue="1" />
+                            <f:selectItem itemLabel="Transportador" itemValue="2"/>
+                            <f:selectItem itemLabel="Usuario" itemValue="3"/>
+                        </p:selectOneMenu>
+
+
+                        <p:commandButton value="Guardar"
+                                         icon="ui-icon-disk" actionListener="#{usuarioMB.guardarUsuario()}"  update=":usuarioListFrm:dtUsuario,:frmUsuario:pnlUsuario"/>
+
+                        <p:commandButton value="Limpiar" 
+                                         icon="ui-icon-trash" action="#{usuarioMB.limpiar()}" update=":frmUsuario:pnlUsuario"/>
+
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+
+
+            <p:separator />
+
+            <h:form id="usuarioListFrm">
+
+                <p:panel header="Lista de Usuarios">
+                    <p:dataTable 
+                        id="dtUsuario"
+                        value="#{usuarioMB.lstUsuario}"
+                        var="usuario"
+                        rowKey="#{usuario.cedula}"
+                        selection="#{usuarioMB.usuarioSelected}"
+                        paginator="true" 
+                        rowsPerPageTemplate="10,20,30,40,50"
+                        selectionMode="single" rows="5">
+
+                        <p:column headerText="Codigo">
+                            <p:outputLabel value="#{usuario.codigo}" />
+                        </p:column>
+                        <p:column headerText="Cedula">
+                            <p:outputLabel value="#{usuario.cedula}" />
+                        </p:column>
+
+                        <p:column headerText="Nombre">
+                            <p:outputLabel value="#{usuario.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Apellido">
+                            <p:outputLabel value="#{usuario.apellido}" />
+                        </p:column>
+
+                        <p:column headerText="Estado">
+                            <p:outputLabel value="#{usuario.estado}" />
+                        </p:column>
+                        <p:column headerText="Rol">
+                            <p:outputLabel value="#{usuario.rol}" />
+                        </p:column>
+
+
+                        <p:column headerText="Acciones">
+                            <p:commandButton  value="Editar" icon="ui-icon-pencil" update=":frmUsuario:pnlUsuario">
+                                <f:setPropertyActionListener value="#{usuario}" target="#{usuarioMB.usuarioSelected}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+            </h:form>
+
+        </f:view>
+
+    </ui:define>
+</ui:composition>

@@ -32,4 +32,19 @@ public class UtilFecha {
         return date;
 
     }
+    
+    public static void main(String[] args) {
+        
+        try {
+
+//            Date fecha = new UtilFecha().convertirStringaDate("Sun May 06 00:00:00 COT 2018");
+          
+            Date fecha = new Date("Sun May 06 00:00:00 COT 2018");
+            System.out.println("Fecha "+fecha);
+        } catch (Exception e) {
+            
+            System.err.println("Error "+e.getMessage());
+        }
+        
+    }
 }

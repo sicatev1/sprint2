@@ -31,32 +31,33 @@ public class UsuarioDAO implements IUsuarioDAO {
 
         ResultSet rs = null;
         Statement s = null;
-        String sql = "select nombre,apellido,cedula,password,rol_id,estado_id from \"USUARIO\"";
+        String sql = "select idusuario,nombre,apellido,cedula,password,estado,rol from USUARIOS";
         try {
 
-            System.out.println("consultando todos las bodegas : consultarTodos()");
+            System.out.println("consultando todos los usuarios : consultarUsuariosDB()");
 
             s = ConexionSingleton.getInstancia().getConexion().createStatement();
             rs = s.executeQuery(sql);
+            String codigo = "";
             String nombre = "";
             String apellido = "";
             String cedula = "";
             String password = "";
-            String rol_id = "";
-            String estado_id = "";
+            String estado = "";
+            String rol = "";
 
             while (rs.next()) {
-
+                codigo = rs.getString("idusuario");
                 nombre = rs.getString("nombre");
                 apellido = rs.getString("apellido");
                 cedula = rs.getString("cedula");
                 password = rs.getString("password");
-                rol_id = rs.getString("rol_id");
-                estado_id = rs.getString("estado_id");
+                estado = rs.getString("estado");
+                rol = rs.getString("rol");
 
                 System.out.println("Se recupero el registro con el nombre " + nombre);
 
-                Usuario usuario = new Usuario(nombre,apellido,cedula,password,rol_id,estado_id);
+                Usuario usuario = new Usuario(codigo, nombre, apellido, cedula, password, estado, rol);
                 lstUsuario.add(usuario);
 
             }
@@ -70,7 +71,6 @@ public class UsuarioDAO implements IUsuarioDAO {
         } finally {
             try {
                 s.close();
-                rs.close();
             } catch (Exception ex) {
                 Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -81,7 +81,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
     public boolean guardarUsuarioDB(Usuario usuario) {
 
-        String insert = "insert into \"USUARIO\" (nombre,apellido,cedula,password,rol_id,estado_id) values(?,?,?,?,?,?)";
+        String insert = "insert into USUARIOS (nombre,apellido,cedula,password,estado,rol) values(?,?,?,?,?,?)";
 
         FileInputStream fis = null;
         PreparedStatement ps = null;
@@ -92,11 +92,11 @@ public class UsuarioDAO implements IUsuarioDAO {
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellido());
             ps.setString(3, usuario.getCedula());
-            ps.setString(1, usuario.getPassword());
-            ps.setString(2, usuario.getRol());
-            ps.setString(3, usuario.getEstado());
-
+            ps.setString(4, usuario.getPassword());
+            ps.setString(5, usuario.getEstado());
+            ps.setString(6, usuario.getRol());
             ps.executeUpdate();
+            
             ConexionSingleton.getInstancia().getConexion().commit();
             return true;
         } catch (Exception ex) {
@@ -104,7 +104,6 @@ public class UsuarioDAO implements IUsuarioDAO {
         } finally {
             try {
                 ps.close();
-                fis.close();
             } catch (Exception ex) {
                 Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             }

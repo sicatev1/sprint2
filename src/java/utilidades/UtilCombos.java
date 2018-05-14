@@ -14,7 +14,6 @@ import modelo.Bodega;
 public class UtilCombos {
 
     public static List<SelectItem> getComboBodega(IControlaBodega control) {
-
         List<Bodega> listaBodegas = control.consultarBodegas();
         List<SelectItem> resultado = new ArrayList<>();
         for (Bodega objeto : listaBodegas) {

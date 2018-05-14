@@ -82,9 +82,7 @@ public class PaqueteDAO implements IPaqueteDAO {
 
     public boolean guardarPaqueteDB(Paquete paquete) {
 
-      
-        
-        String insert = "insert into PAQUETE (guia,fecha_entrega,fecha_ingreso,estado,remitente,destinatario,bodega) values(?,?,?,?,?,?,?)";
+        String insert = "insert into PAQUETES (guia,fecha_entrega,fecha_ingreso,estado,remitente,destinatario,bodega) values(?,?,?,?,?,?,?)";
 
         FileInputStream fis = null;
         PreparedStatement ps = null;
@@ -93,12 +91,12 @@ public class PaqueteDAO implements IPaqueteDAO {
 
             ps = ConexionSingleton.getInstancia().getConexion().prepareStatement(insert);
             ps.setString(1, paquete.getGuia());
-            ps.setDate(2, (java.sql.Date)paquete.getFecha_entrega());
-            ps.setDate(3, (java.sql.Date)paquete.getFecha_ingreso());
-            ps.setString(5, paquete.getEstado());
-            ps.setInt(6, paquete.getRemitente());
-            ps.setInt(7, paquete.getDestinatario());
-            ps.setInt(8, paquete.getBodega());
+            ps.setDate(2, new java.sql.Date(paquete.getFecha_entrega().getDate(),paquete.getFecha_entrega().getMonth(),paquete.getFecha_entrega().getYear()));
+            ps.setDate(3,  new java.sql.Date(paquete.getFecha_ingreso().getDate(),paquete.getFecha_ingreso().getMonth(),paquete.getFecha_ingreso().getYear()));
+            ps.setString(4, paquete.getEstado());
+            ps.setInt(5, paquete.getRemitente());
+            ps.setInt(6, paquete.getDestinatario());
+            ps.setInt(7, paquete.getBodega());
 
             ps.executeUpdate();
             ConexionSingleton.getInstancia().getConexion().commit();
@@ -127,7 +125,6 @@ public class PaqueteDAO implements IPaqueteDAO {
         try {
 
             System.out.println("consultando todos los paquetes : consultarPaqueteDTODB()");
-            System.out.println("Vamo a ve");
 
             s = ConexionSingleton.getInstancia().getConexion().createStatement();
             rs = s.executeQuery(sql);

@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import modelo.Usuario;
 import dao.IUsuarioDAO;
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import logicaNegocio.interfaces.IControlaUsuario;
 
@@ -24,6 +25,9 @@ public class UsuarioMB {
     @EJB
     private IControlaUsuario controlaUsuarioInterface;
 
+    private String estadoUsuario;
+    private String rol;
+
     private Usuario usuarioSelected;
     private List<Usuario> lstUsuario;
 
@@ -32,15 +36,24 @@ public class UsuarioMB {
         lstUsuario = new ArrayList<>();
     }
 
+    @PostConstruct
+    public void init() {
+        lstUsuario = controlaUsuarioInterface.consultarUsuario();
+    }
+
     public void guardarUsuario() {
 
-        boolean guardado = controlaUsuarioInterface.guardarUsuario(usuarioSelected);
-        if (guardado) {
+        if (usuarioSelected.getCodigo() == null) {
+            boolean guardado = controlaUsuarioInterface.guardarUsuario(usuarioSelected);
+            if (guardado) {
 
-            lstUsuario = controlaUsuarioInterface.consultarUsuario();
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario Guardada", "");
-            FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+                lstUsuario = controlaUsuarioInterface.consultarUsuario();
+                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario Guardada", "");
+                FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+            }
+        } else {
         }
+
     }
 
     public void limpiar() {
@@ -62,4 +75,21 @@ public class UsuarioMB {
     public void setLstUsuario(List<Usuario> lstUsuario) {
         this.lstUsuario = lstUsuario;
     }
+
+    public String getEstadoUsuario() {
+        return estadoUsuario;
+    }
+
+    public void setEstadoUsuario(String estadoUsuario) {
+        this.estadoUsuario = estadoUsuario;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
 }

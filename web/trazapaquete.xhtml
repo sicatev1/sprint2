@@ -17,10 +17,12 @@
                     <p:panelGrid columns="2" id="pnlTrazabilidad">
 
                         <h:outputLabel value="#{bundle.codigoBodega}" for="inptCodigo"/>
-                        <p:inputText id="inptCodigo" value="#{trazaPaqueteMB.codigoBodega}" required="true" />
+                        <p:inputText id="inptCodigo" value="#{trazaPaqueteMB.codigoBodega}" required="true" 
+                                     requiredMessage="Debe digitar un codigo de bodega" />
 
                         <p:commandButton value="#{bundle.btnConsultaPaquete}"
-                                         icon="ui-icon-search" actionListener="#{trazaPaqueteMB.consultarPaquetesPorBodega()}" >
+                                         icon="ui-icon-search" actionListener="#{trazaPaqueteMB.consultarPaquetesPorBodega()}" 
+                                         update=":paquetesPorBodegaListFrm:dtPaquetesPorBodega">
                             
                         </p:commandButton>
 
@@ -53,6 +55,18 @@
                             <p:outputLabel value="#{paquetePorBodega.nombreCliente}" />
                         </p:column>
 
+                         <p:column headerText="Estado paquete">
+                             <p:outputLabel value="#{paquetePorBodega.estadoPaquete}" />
+                        </p:column>
+                        
+                         <p:column headerText="Fecha Ingreso">
+                             <p:outputLabel value="#{paquetePorBodega.fechaIngreso}" />
+                        </p:column>
+                        
+                        <p:column headerText="Nombre Transportadores">
+                            <p:outputLabel value="#{paquetePorBodega.nombresTransportadores}" />
+                        </p:column>
+                        
                     </p:dataTable>
 
                 </p:panel>

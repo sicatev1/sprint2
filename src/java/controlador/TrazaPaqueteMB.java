@@ -16,6 +16,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import logicaNegocio.interfaces.IControlaPaquete;
 import logicaNegocio.interfaces.IControlaPersona;
+import modelo.Destinatario;
 import modelo.Paquete;
 import modelo.Persona;
 
@@ -49,24 +50,35 @@ public class TrazaPaqueteMB {
     public void consultarPaquetesPorBodega(){
         
         List<Paquete> listPaqueteTemp = controlaPaqueteInterface.consultarPaquete();
+        listPaquetePorBodegaDTO = new ArrayList<>();
         if(listPaqueteTemp != null && !listPaqueteTemp.isEmpty()){
             listPaquetesPorBodega = new ArrayList<>();
             for (Paquete paquete : listPaqueteTemp) {
                 //Filtra por el paquete seleccionado
-//                if(paquete.getBodega().equalsIgnoreCase(codigoBodega)){
+                if(paquete.getBodega().toString().equals(codigoBodega) ){
 //                    
-//                    PaquetePorBodegaDTO paquetePorBodegaDTO = new PaquetePorBodegaDTO();
-//                    paquetePorBodegaDTO.setNumeroBodega(codigoBodega);
+                    PaquetePorBodegaDTO paquetePorBodegaDTO = new PaquetePorBodegaDTO();
+                    paquetePorBodegaDTO.setNumeroBodega(codigoBodega);
 //                    
-//                    Persona persona = controlaPersonaInterface.consultarDestinatario(" where iddestinatario = "+paquete.getDestinatario()).get(0);
+//                    Destinatario destinatario = controlaPersonaInterface.consultarDestinatario(" where iddestinatario = "+paquete.getDestinatario()).get(0);
 //                    
-//                    paquetePorBodegaDTO.setNombreCliente(persona.getNombre());
+                    paquetePorBodegaDTO.setNombreCliente("Cristian Gomez");
+                    paquetePorBodegaDTO.setEstadoPaquete(paquete.getEstado());
+                    paquetePorBodegaDTO.setFechaIngreso(paquete.getFecha_ingreso().toString());
+                    paquetePorBodegaDTO.setNombresTransportadores("Juan Carlos, Luis Fonsi, Maria Fonsa");
 //                    listPaquetesPorBodega.add(paquete);
-//                }
+                    listPaquetePorBodegaDTO.add(paquetePorBodegaDTO);
+                }
             }
         }
         else{
             FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, 
+                    "No se encontraron paquetes asociados a la bodega", "");
+            FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        }
+        
+        if(listPaquetePorBodegaDTO.isEmpty()){
+                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, 
                     "No se encontraron paquetes asociados a la bodega", "");
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         }

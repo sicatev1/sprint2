@@ -11,7 +11,7 @@
         <f:view>
             <h:form id="frmConsultaPaquetes">
 
-                <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                <p:messages id="messages" showDetail="false" autoUpdate="true" />
 
                 <p:panel header="#{bundle.pnlConstultaEstadoPaq}">
                     <p:panelGrid columns="2" id="pnlConsultaEstadoPq">
@@ -21,13 +21,13 @@
                                      requiredMessage="#{bundle.obligatorionumguia}" />
 
                         <p:commandButton value="#{bundle.btnconsultaestpaq}"
-                                         icon="ui-icon-search" actionListener="#{trazaPaqueteMB.consultarPaquetesPorBodega()}" 
-                                         update=":estadoPaqueteFrm:pnlPaquete">
+                                         icon="ui-icon-search" actionListener="#{consultaEstadoPaqMB.buscarEstadoPaquete()}" 
+                                         update=":estadoPaqueteFrm:pnlPaqueteGrid">
                             
                         </p:commandButton>
 
-                        <p:commandButton value="Limpiar" 
-                                         icon="ui-icon-trash"/>
+                        <p:commandButton value="Limpiar" actionListener="#{consultaEstadoPaqMB.limpiar()}"
+                                         icon="ui-icon-trash" update=":estadoPaqueteFrm:pnlPaqueteGrid,:frmConsultaPaquetes:pnlConsultaEstadoPq" />
 
                     </p:panelGrid>
                 </p:panel>
@@ -38,26 +38,26 @@
             
              <h:form id="estadoPaqueteFrm">
 
-                 <p:panel header="#{bundle.pnlDatosPaquete}">
-                     <p:panelGrid columns="4" id="pnlPaquete">
+                 <p:panel header="#{bundle.pnlDatosPaquete}" id="pnl">
+                     <p:panelGrid columns="4" id="pnlPaqueteGrid">
                          
                         <h:outputLabel value="#{bundle.numGuiaPaquete}" for="inptNumguiacons"/>
-                        <p:inputText id="inptNumguiacons" value="#{consultaEstadoPaqMB.paqueteSelected.guia}" disabled="true" />
+                        <p:inputText id="inptNumguiacons" value="#{consultaEstadoPaqMB.paqueteSelected.numeroGuia}" disabled="true" />
                         
                         <h:outputLabel value="#{bundle.txtNombreCliente}" for="inptNombleCliente"/>
-                        <p:inputText id="inptNombleCliente" value="#" disabled="true" />
+                        <p:inputText id="inptNombleCliente" value="#{consultaEstadoPaqMB.paqueteSelected.nombreCliente}" disabled="true" />
                         
                         <h:outputLabel value="#{bundle.txtFechaIngreso}" for="inptFechaIngreso"/>
-                        <p:calendar id="inptFechaIngreso" disabled="true"/>
+                        <p:calendar id="inptFechaIngreso" value="#{consultaEstadoPaqMB.paqueteSelected.fechaIngresoBodega}" disabled="true"/>
                          
                         <h:outputLabel value="#{bundle.txtEstadoPaq}" for="inptEstadoPaq"/>
-                        <p:inputText id="inptEstadoPaq" disabled="true"/>
+                        <p:inputText id="inptEstadoPaq" value="#{consultaEstadoPaqMB.paqueteSelected.estadoActual}" disabled="true"/>
                         
                         <h:outputLabel value="#{bundle.txtFechaAprox}" for="inptFechaAprox"/>
-                        <p:calendar id="inptFechaAprox" disabled="true"/>
+                        <p:calendar id="inptFechaAprox"  value="#{consultaEstadoPaqMB.paqueteSelected.fechaAproxEntrega}" disabled="true"/>
                          
                         <h:outputLabel value="#{bundle.txtFechaEntrega}" for="inptFechaEntrega"/>
-                        <p:calendar id="inptFechaEntrega" disabled="true"/>
+                        <p:calendar id="inptFechaEntrega" value="#{consultaEstadoPaqMB.paqueteSelected.fechaEntrega}" disabled="true"/>
                         
                      </p:panelGrid>
                    

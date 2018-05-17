@@ -7,6 +7,7 @@ package logicaNegocio;
 
 import dao.PaqueteDAO;
 import dao.IPaqueteDAO;
+import dto.EstadoPaqueteDTO;
 import dto.PaquetesDTO;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -33,4 +34,10 @@ public class ControlaPaquete implements IControlaPaquete {
     public List<PaquetesDTO> consultarPaqueteDTO() {
         return paqueteDAO.consultarPaqueteDTO();
     }
+    
+    @Override
+    public EstadoPaqueteDTO consultaEstadoPaquete(String numGuia){
+        return paqueteDAO.consultaEstadoPaquete(numGuia);
+    }
+    
 }

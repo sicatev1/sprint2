@@ -5,6 +5,7 @@
  */
 package logicaNegocio.interfaces;
 
+import dto.EstadoPaqueteDTO;
 import dto.PaquetesDTO;
 import java.util.List;
 import javax.ejb.Local;
@@ -17,4 +18,5 @@ public interface IControlaPaquete {
 
     public boolean guardarPaquete(Paquete paquete);
     public List<PaquetesDTO> consultarPaqueteDTO();
+    public EstadoPaqueteDTO consultaEstadoPaquete(String numGuia);
 }

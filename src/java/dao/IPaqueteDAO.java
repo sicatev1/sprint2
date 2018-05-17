@@ -5,6 +5,7 @@
  */
 package dao;
 
+import dto.EstadoPaqueteDTO;
 import dto.PaquetesDTO;
 import java.util.List;
 import modelo.Paquete;
@@ -14,4 +15,5 @@ public interface IPaqueteDAO {
     public List<Paquete> consultarPaqueteDB();
     public List<PaquetesDTO> consultarPaqueteDTO();
     public boolean guardarPaqueteDB(Paquete paquete);
+    public EstadoPaqueteDTO consultaEstadoPaquete(String numGuia);
 }

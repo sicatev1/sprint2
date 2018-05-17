@@ -6,6 +6,7 @@
 package dao;
 
 import conexion.ConexionSingleton;
+import dto.EstadoPaqueteDTO;
 import dto.PaquetesDTO;
 import java.io.FileInputStream;
 import java.sql.PreparedStatement;
@@ -193,5 +194,13 @@ public class PaqueteDAO implements IPaqueteDAO {
 
 
         return lstPaquete;
+    }
+    
+    @Override
+    public EstadoPaqueteDTO consultaEstadoPaquete(String numGuia){
+    
+        EstadoPaqueteDTO estadoPaqueteDTO = null;
+        
+        return null;
     }
 }

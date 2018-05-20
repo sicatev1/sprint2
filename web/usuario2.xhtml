@@ -1,12 +1,18 @@
-<ui:composition 
-    template="/home.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-    <ui:define name="data">
+    <h:head>
+        <title>SICATE</title>		
+    </h:head>
+    <h:body> 
+
+
+        <p:layoutUnit position="north" size="120" resizable="true" closable="true" collapsible="true">
+            <img src="image/logosicate.png" width="250" height="120" alt="sicate"/>
+
+        </p:layoutUnit>
 
         <f:view>
             <h:form id="frmUsuario">
@@ -41,76 +47,29 @@
                         <h:outputLabel value="Rol" for="inptRol"/>
                         <p:selectOneMenu id="inptRol" value="#{usuarioMB.usuarioSelected.rol}">
                             <f:selectItem itemLabel="Seleccione" itemValue="-1"/>
-                            <f:selectItem itemLabel="Administrador" itemValue="1" />
                             <f:selectItem itemLabel="Transportador" itemValue="2"/>
                             <f:selectItem itemLabel="Usuario" itemValue="3"/>
                         </p:selectOneMenu>
 
 
                         <p:commandButton value="Guardar"
-                                         icon="ui-icon-disk" actionListener="#{usuarioMB.guardarUsuario()}"  update=":usuarioListFrm:dtUsuario,:frmUsuario:pnlUsuario"/>
+                                         icon="ui-icon-disk" actionListener="#{usuarioMB.guardarUsuario()}"  update=":frmUsuario:pnlUsuario"/>
 
                         <p:commandButton value="Limpiar" 
                                          icon="ui-icon-trash" action="#{usuarioMB.limpiar()}" update=":frmUsuario:pnlUsuario"/>
 
-                       
-                        
+                        <h:form>
+                            <h:commandLink value="Sign In" action="../../inicio" />
+
+                        </h:form>
+
                     </p:panelGrid>
                 </p:panel>
             </h:form>
 
-
-
             <p:separator />
-
-            <h:form id="usuarioListFrm">
-
-                <p:panel header="Lista de Usuarios">
-                    <p:dataTable 
-                        id="dtUsuario"
-                        value="#{usuarioMB.lstUsuario}"
-                        var="usuario"
-                        rowKey="#{usuario.cedula}"
-                        selection="#{usuarioMB.usuarioSelected}"
-                        paginator="true" 
-                        rowsPerPageTemplate="10,20,30,40,50"
-                        selectionMode="single" rows="5">
-
-                        <p:column headerText="Codigo">
-                            <p:outputLabel value="#{usuario.codigo}" />
-                        </p:column>
-                        <p:column headerText="Cedula">
-                            <p:outputLabel value="#{usuario.cedula}" />
-                        </p:column>
-
-                        <p:column headerText="Nombre">
-                            <p:outputLabel value="#{usuario.nombre}" />
-                        </p:column>
-
-                        <p:column headerText="Apellido">
-                            <p:outputLabel value="#{usuario.apellido}" />
-                        </p:column>
-
-                        <p:column headerText="Estado">
-                            <p:outputLabel value="#{usuario.estado}" />
-                        </p:column>
-                        <p:column headerText="Rol">
-                            <p:outputLabel value="#{usuario.rol}" />
-                        </p:column>
-
-
-                        <p:column headerText="Acciones">
-                            <p:commandButton  value="Editar" icon="ui-icon-pencil" update=":frmUsuario:pnlUsuario">
-                                <f:setPropertyActionListener value="#{usuario}" target="#{usuarioMB.usuarioSelected}"/>
-                            </p:commandButton>
-                        </p:column>
-
-                    </p:dataTable>
-
-                </p:panel>
-            </h:form>
-
         </f:view>
 
-    </ui:define>
-</ui:composition>
+    </h:body>
+
+</html>

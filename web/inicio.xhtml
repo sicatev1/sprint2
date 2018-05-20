@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <h:head>
+        <title>SICATE</title>		
+    </h:head>
+    <h:body> 
+
+        <h:form>
+            <p:messages autoUpdate="true"/>
+            <br></br>
+
+
+
+            <p:layoutUnit position="north" size="120" resizable="true" closable="true" collapsible="true">
+                <img src="image/logosicate.png" width="250" height="120" alt="sicate"/>
+
+            </p:layoutUnit>
+
+            <br></br>
+
+            <b><H1 align="left" style="color:#DC143C" ><FONT FACE="Comic Sans MS"><FONT SIZE="5"><left>Login</left></FONT></FONT></H1></b>
+
+           
+
+           
+            <table border="0">
+
+                <tr>
+                    <td> <p:outputLabel for="Name" value="Name:"/> </td>
+                    <td><p:inputText id="Name" value="#{loginMB.usuarioSelected.nombre}" 
+                                     required="true"
+                                     requiredMessage="Este campo Name es obligatorio"
+                                     validatorMessage="(Invalido para Name) solo numeros y letras con min 
+                                     de 3 a 8 caracteres:"
+                                     label="Name" >
+
+                            <f:validateLength minimum="3" maximum="8" />
+                            <f:validateRegex pattern="[A-za-z0-9]+" for="Name"/>  
+
+                        </p:inputText></td>
+
+                </tr>
+                <br />
+                <br />
+
+                <td>  <p:outputLabel for="Password" value="Password:" /> </td>
+                <td><p:password id="Password" value="#{loginMB.usuarioSelected.password}" 
+                                 required="true"
+                                 requiredMessage="Este campo password es obligatorio"
+                                 validatorMessage="(Invalido para password) solo numeros y letras con min 
+                                 de 3 a 8 caracteres:"
+                                 label="Password" >    
+
+                        <f:validateLength minimum="5" maximum="12" />
+                        <f:validateRegex pattern="[A-za-z0-9]+" for="Password"/>   
+                    </p:password>></td> 
+            </table> 
+
+            <br /> <br />
+            <td> <h:commandLink action="#{loginMB.validate()}" value="Enter"/> 
+            </td>
+
+           <br /> 
+
+           
+
+        </h:form>   
+        
+        <h:form>
+            <h:commandLink action="#{loginMB.goNextPage()}" value="Register" /> 
+        </h:form>
+        
+         <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                Proyecto final de la asignatura "Ingenieria de software 3"
+                <p:outputLabel value="Creado por:" /><br/>
+                <p:outputLabel value="Erick Pulido Neira " /><br/>
+                <p:outputLabel value="Maria del Pilar" /><br/>
+                <p:outputLabel value="Jose Luis" /><br/>
+                <p:outputLabel value="Daniel Calvo" /><br/>
+                <p:outputLabel value="Cristian Gomez Ruiz" /><br/>
+            </p:layoutUnit>
+    </h:body>
+</html>
+

@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Paquete;
+import utilidades.ConstantesApp;
+import utilidades.ConstantesApp.EstadosTrazabilidad;
 
 public class PaqueteDAO implements IPaqueteDAO {
 
@@ -41,7 +43,7 @@ public class PaqueteDAO implements IPaqueteDAO {
             String guia = "";
             Date fecha_entrega;
             Date fecha_ingreso;
-            String estado="";
+            String estado = "";
             Integer remitente;
             Integer destinatario;
             Integer bodega;
@@ -92,8 +94,8 @@ public class PaqueteDAO implements IPaqueteDAO {
 
             ps = ConexionSingleton.getInstancia().getConexion().prepareStatement(insert);
             ps.setString(1, paquete.getGuia());
-            ps.setDate(2, new java.sql.Date(paquete.getFecha_entrega().getDate(),paquete.getFecha_entrega().getMonth(),paquete.getFecha_entrega().getYear()));
-            ps.setDate(3,  new java.sql.Date(paquete.getFecha_ingreso().getDate(),paquete.getFecha_ingreso().getMonth(),paquete.getFecha_ingreso().getYear()));
+            ps.setDate(2, new java.sql.Date(paquete.getFecha_entrega().getDate(), paquete.getFecha_entrega().getMonth(), paquete.getFecha_entrega().getYear()));
+            ps.setDate(3, new java.sql.Date(paquete.getFecha_ingreso().getDate(), paquete.getFecha_ingreso().getMonth(), paquete.getFecha_ingreso().getYear()));
             ps.setString(4, paquete.getEstado());
             ps.setInt(5, paquete.getRemitente());
             ps.setInt(6, paquete.getDestinatario());
@@ -154,21 +156,20 @@ public class PaqueteDAO implements IPaqueteDAO {
                 guia = rs.getString("guia");
                 fecha_entrega = rs.getString("fecha_Entrega");
                 fecha_salida = rs.getString("fecha_Salida");
-                codigoRe= rs.getInt("idremitente");
-                nombreRe= rs.getString("nombre");
-                identificacionRe= rs.getInt("identificacion");
-                direccionRe= rs.getString("direccion");
-                telefonoRe= rs.getString("telefono");
-                ciudadRe= rs.getString("ciudad");
-                
+                codigoRe = rs.getInt("idremitente");
+                nombreRe = rs.getString("nombre");
+                identificacionRe = rs.getInt("identificacion");
+                direccionRe = rs.getString("direccion");
+                telefonoRe = rs.getString("telefono");
+                ciudadRe = rs.getString("ciudad");
 
-                codigoDe= rs.getInt("iddestinatario");
-                nombreDe= rs.getString("nombre");
-                identificacionDe= rs.getInt("identificacion");
-                direccionDe= rs.getString("direccion");
-                telefonoDe= rs.getString("telefono");
-                ciudadDe= rs.getString("ciudad");
-                coordenadaDe= rs.getString("coordenadas");
+                codigoDe = rs.getInt("iddestinatario");
+                nombreDe = rs.getString("nombre");
+                identificacionDe = rs.getInt("identificacion");
+                direccionDe = rs.getString("direccion");
+                telefonoDe = rs.getString("telefono");
+                ciudadDe = rs.getString("ciudad");
+                coordenadaDe = rs.getString("coordenadas");
 
                 System.out.println("Se recupero el registro con la guia " + guia);
 
@@ -192,15 +193,61 @@ public class PaqueteDAO implements IPaqueteDAO {
             }
         }
 
-
         return lstPaquete;
     }
-    
+
     @Override
-    public EstadoPaqueteDTO consultaEstadoPaquete(String numGuia){
-    
+    public EstadoPaqueteDTO consultaEstadoPaquete(String numGuia) {
+
         EstadoPaqueteDTO estadoPaqueteDTO = null;
-        
-        return null;
+        ResultSet rs = null;
+        Statement s = null;
+        String idPaquete = null;
+        String sql = "select p.estado as estado, d.nombre as nombre, p.idpaquete as paquete, p.fecha_entrega as fechaentrega from paquetes p, destinatarios d "
+                + " where p.destinatario = d.iddestinatario and p.guia = '" + numGuia + "'";
+        try {
+
+            System.out.println("consultando estado de los paquetes : consultaEstadoPaquete()");
+
+            s = ConexionSingleton.getInstancia().getConexion().createStatement();
+            rs = s.executeQuery(sql);
+
+            while (rs.next()) {
+
+                estadoPaqueteDTO = new EstadoPaqueteDTO();
+                EstadosTrazabilidad estado = ConstantesApp.EstadosTrazabilidad.obtenerPorCodigo(rs.getString("estado"));
+                estadoPaqueteDTO.setEstadoActual(estado.getNombre());
+                estadoPaqueteDTO.setNombreCliente(rs.getString("nombre"));
+                estadoPaqueteDTO.setFechaEntrega(rs.getDate("fechaentrega"));
+                estadoPaqueteDTO.setNumeroGuia(numGuia);
+                
+                idPaquete = rs.getString("paquete");
+            }
+
+            s.clearBatch();
+
+            if (idPaquete != null) {
+                sql = "SELECT fecha FROM trazabilidad WHERE paquete = " + idPaquete + " and estado = " + EstadosTrazabilidad.INGRESADO.getCodigo();
+                rs = s.executeQuery(sql);
+                while (rs.next()) {
+                    estadoPaqueteDTO.setFechaIngresoBodega(rs.getDate("fecha"));
+                }
+            }
+
+        } catch (SQLException ex) {
+
+            System.err.println("Error al consultar paqueteDTO");
+            ex.printStackTrace();
+
+        } finally {
+            try {
+                s.close();
+//                rs.close();
+            } catch (Exception ex) {
+                Logger.getLogger(PaqueteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            return estadoPaqueteDTO;
+        }
     }
 }

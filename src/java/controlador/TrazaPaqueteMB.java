@@ -16,6 +16,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import logicaNegocio.interfaces.IControlaPaquete;
 import logicaNegocio.interfaces.IControlaPersona;
+import logicaNegocio.interfaces.IControlaTrazabilidad;
 import modelo.Destinatario;
 import modelo.Paquete;
 import modelo.Persona;
@@ -27,58 +28,39 @@ import modelo.Persona;
 @ManagedBean
 @ViewScoped
 public class TrazaPaqueteMB {
-    
+
     private List<Paquete> listPaquetesPorBodega;
     private Paquete paqueteSelected;
     private Persona destinatario;
     private List<PaquetePorBodegaDTO> listPaquetePorBodegaDTO;
-    
+
     private String codigoBodega;
-    
+
     @EJB
     private IControlaPaquete controlaPaqueteInterface;
-    
+
     @EJB
     private IControlaPersona controlaPersonaInterface;
 
+    @EJB
+    private IControlaTrazabilidad controlaTrazabilidadInterface;
+
     @PostConstruct
-    public void inicilizarPagina(){
+    public void inicilizarPagina() {
         listPaquetesPorBodega = new ArrayList<>();
         listPaquetePorBodegaDTO = new ArrayList<>();
     }
-    
-    public void consultarPaquetesPorBodega(){
-        
-        List<Paquete> listPaqueteTemp = controlaPaqueteInterface.consultarPaquete();
-        listPaquetePorBodegaDTO = new ArrayList<>();
-        if(listPaqueteTemp != null && !listPaqueteTemp.isEmpty()){
-            listPaquetesPorBodega = new ArrayList<>();
-            for (Paquete paquete : listPaqueteTemp) {
-                //Filtra por el paquete seleccionado
-                if(paquete.getBodega().toString().equals(codigoBodega) ){
-//                    
-                    PaquetePorBodegaDTO paquetePorBodegaDTO = new PaquetePorBodegaDTO();
-                    paquetePorBodegaDTO.setNumeroBodega(codigoBodega);
-//                    
-//                    Destinatario destinatario = controlaPersonaInterface.consultarDestinatario(" where iddestinatario = "+paquete.getDestinatario()).get(0);
-//                    
-                    paquetePorBodegaDTO.setNombreCliente("Cristian Gomez");
-                    paquetePorBodegaDTO.setEstadoPaquete(paquete.getEstado());
-                    paquetePorBodegaDTO.setFechaIngreso(paquete.getFecha_ingreso().toString());
-                    paquetePorBodegaDTO.setNombresTransportadores("Juan Carlos, Luis Fonsi, Maria Fonsa");
-//                    listPaquetesPorBodega.add(paquete);
-                    listPaquetePorBodegaDTO.add(paquetePorBodegaDTO);
-                }
-            }
-        }
-        else{
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, 
-                    "No se encontraron paquetes asociados a la bodega", "");
+
+    public void consultarPaquetesPorBodega() {
+
+        listPaquetePorBodegaDTO = controlaTrazabilidadInterface.consultarTrazabilidadPorBodega(codigoBodega);
+
+        if (listPaquetePorBodegaDTO != null && !listPaquetePorBodegaDTO.isEmpty()) {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    "Se encontraron paquetes asociados a la bodega", "");
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        }
-        
-        if(listPaquetePorBodegaDTO.isEmpty()){
-                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, 
+        } else {
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "No se encontraron paquetes asociados a la bodega", "");
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         }
@@ -115,13 +97,5 @@ public class TrazaPaqueteMB {
     public void setListPaquetePorBodegaDTO(List<PaquetePorBodegaDTO> listPaquetePorBodegaDTO) {
         this.listPaquetePorBodegaDTO = listPaquetePorBodegaDTO;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

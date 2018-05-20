@@ -36,6 +36,7 @@ public class ConsultaEstadoPaqMB {
     public void buscarEstadoPaquete() {
         System.out.println("Entro a buscar estado del paquete");
 
+        paqueteSelected = new EstadoPaqueteDTO();
         paqueteSelected = controlaPaqueteInterface.consultaEstadoPaquete(numGuia);
         if (paqueteSelected != null) {
 

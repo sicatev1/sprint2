@@ -11,12 +11,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+
 import modelo.Paquete;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import logicaNegocio.interfaces.IControlaBodega;
 import logicaNegocio.interfaces.IControlaPaquete;
@@ -24,6 +26,12 @@ import logicaNegocio.interfaces.IControlaPersona;
 import modelo.Bodega;
 import modelo.Destinatario;
 import modelo.Remitente;
+import org.primefaces.event.map.GeocodeEvent;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.GeocodeResult;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 import utilidades.UtilFecha;
 
 @ManagedBean(name = "paqueteMB")
@@ -64,18 +72,22 @@ public class PaqueteMB {
     //Datos paquete
     private String guia;
     private Date fecha_entrega;
-    private Integer cod_paquete;
+    private String cod_paquete;
     
-     private List<SelectItem> comboBodegas;
-     private int bodegaSelected;
+    private List<SelectItem> comboBodegas;
+    private int bodegaSelected;
+    private MapModel geoModel;
+    private String centerGeoMap = "3.4516, -76.5320";
     
 
     @PostConstruct
     public void init() {
+       // FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         paqueteSelected = new PaquetesDTO();
         lstPaqueteDTO = new ArrayList<>();
         comboBodegas = utilidades.UtilCombos.getComboBodega(controlaBodega);
         utilFecha = new UtilFecha();
+        geoModel = new DefaultMapModel();
         consultarPaquetes();
     }
 
@@ -87,7 +99,7 @@ public class PaqueteMB {
         try {
 
             remitente = new Remitente(codigoRem, nombreRem, identificacionRem, direccionRem, telefonoRem, ciudadRem);
-            destinatario = new Destinatario(codigoDes, nombreDes, identificacionDes, direccionDes, telefonoDes, ciudadDes, "falta coordenada");
+            destinatario = new Destinatario(codigoDes, nombreDes, identificacionDes, "3.4654885, -76.5007286", telefonoDes, ciudadDes, "312323213");
 
             boolean guardoRem = controlaPersonaInterface.guardarRemitente(remitente);
             boolean guardoDes = controlaPersonaInterface.guardarDestinatario(destinatario);
@@ -145,7 +157,7 @@ public class PaqueteMB {
     ciudadDes=paqueteSelected.getCiudadDe();
     coordenadas=paqueteSelected.getCoordenadaDe();
     //Datos paquete
-    cod_paquete=paqueteSelected.getCodPaquete();
+    cod_paquete=paqueteSelected.getCodPaquete().toString();
     guia=paqueteSelected.getGuia();
 //    fecha_entrega=  paqueteSelected.getFecha_entrega();
     
@@ -180,12 +192,31 @@ public class PaqueteMB {
 
     public void consultarPaquetes() {
 
+//        PaquetesDTO paquetesDTO= new PaquetesDTO("1", "1234", "123455", "121313", 1, "pedrito", 12455, "dsdsad", "2312321", "cali", 1, "Juanito", 123456, "dasdasd", "323213", "cali", "dsdsd");
+//        lstPaqueteDTO.add(paquetesDTO);
+        
         if(lstPaqueteDTO.isEmpty()){
         lstPaqueteDTO = controlaPaqueteInterface.consultarPaqueteDTO();
         }
         
         
     }
+    
+    public void onGeocode(GeocodeEvent  event) {
+        List<GeocodeResult> results = event.getResults();
+         
+        if (results != null && !results.isEmpty()) {
+            LatLng center = results.get(0).getLatLng();
+            centerGeoMap = center.getLat() + "," + center.getLng();
+            coordenadas= center.getLat() + "," + center.getLng();
+            for (int i = 0; i < results.size(); i++) {
+                GeocodeResult result = results.get(i);
+                geoModel.addOverlay(new Marker(result.getLatLng(), result.getAddress()));
+            }
+        }
+    }
+    
+    
 
     public String getCiudadDes() {
         return ciudadDes;
@@ -357,11 +388,11 @@ public class PaqueteMB {
 
   
 
-    public Integer getCod_paquete() {
+    public String getCod_paquete() {
         return cod_paquete;
     }
 
-    public void setCod_paquete(Integer cod_paquete) {
+    public void setCod_paquete(String cod_paquete) {
         this.cod_paquete = cod_paquete;
     }
 
@@ -379,6 +410,22 @@ public class PaqueteMB {
 
     public void setBodegaSelected(int bodegaSelected) {
         this.bodegaSelected = bodegaSelected;
+    }
+
+    public String getCenterGeoMap() {
+        return centerGeoMap;
+    }
+
+    public void setCenterGeoMap(String centerGeoMap) {
+        this.centerGeoMap = centerGeoMap;
+    }
+
+    public MapModel getGeoModel() {
+        return geoModel;
+    }
+
+    public void setGeoModel(MapModel geoModel) {
+        this.geoModel = geoModel;
     }
     
     

@@ -1,5 +1,5 @@
 <ui:composition 
-    template="/home.xhtml"
+  template="/home.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -8,100 +8,104 @@
 
     <ui:define name="data">
 
-        <f:view>
 
+        <script type="text/javascript">
+            function geocode() {
+                PF('geoMap').geocode(document.getElementById('address').value);
+            }
+        </script>
+
+
+
+
+        <f:view>
             <h:form id="frmPaquete">
 
-                <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                <p:messages id="messages" showDetail="true"  />
 
-                <p:panel header="Recepcion de paquetes">
-
-
-                    <p:panel header="Datos Paquete">
-
-                        <p:panelGrid columns="2">
-
-                             <p:outputLabel value="# Codigo:  " for="inpCodigo"  />
-                             <p:inputText id="inpCodigo" maxlength="50" value="#{paqueteMB.cod_paquete}" />
-                            
-                            <p:outputLabel value="# Guia(*):  " for="inpguia"  />
-                            <p:inputText id="inpguia" required="true" maxlength="50" value="#{paqueteMB.guia}" />
-
-                            <p:outputLabel value="Fecha de entrega*): " for="calfechentre" />
-                            <p:calendar id="calfechentre"  showOn="button" value="#{paqueteMB.fecha_entrega}" />
-
-                            <p:outputLabel value="# Bodega(*):  " for="seloneBog"  />
-                            <p:selectOneMenu id="seloneBog" value="#{paqueteMB.bodegaSelected}" effect="fold" var="bod" >
-                                <f:selectItem itemLabel="Seleccione" itemValue="-1" />
-                                <f:selectItems value="#{paqueteMB.comboBodegas}" />
-                            </p:selectOneMenu>
-
-
-                        </p:panelGrid>
-
-                    </p:panel>
-
+                <p:panel header="Recepcion de paquetes" >
 
                     <p:panelGrid columns="2">
 
-                        <p:panel header="Datos Remitente">
+                        <p:panel header="Datos Remitente"    >
 
-                            <p:panelGrid columns="2">
+                            <p:panelGrid columns="2" style="width:300px; height:300px">
 
-                                <p:outputLabel value="Nombre(*):  " for="inpNomRem"  />
+                                <p:outputLabel value="Nombre:  " for="inpNomRem"  />
                                 <p:inputText id="inpNomRem" required="true" maxlength="50" value="#{paqueteMB.nombreRem}" />
 
-                                <p:outputLabel value="Identificacion(*):  " for="inpIdRem"  />
+                                <p:outputLabel value="Identificacion:  " for="inpIdRem"  />
                                 <p:inputText id="inpIdRem" required="true" maxlength="10" value="#{paqueteMB.identificacionRem}" />
 
-                                <p:outputLabel value="Ciudad(*):  " for="inpCiuRem"  />
+                                <p:outputLabel value="Ciudad:  " for="inpCiuRem"  />
                                 <p:inputText id="inpCiuRem" required="true" maxlength="50" value="#{paqueteMB.ciudadRem}"/>
 
-                                <p:outputLabel value="Direccion(*):  " for="inpDirRem"  />
+                                <p:outputLabel value="Direccion:  " for="inpDirRem"  />
                                 <p:inputText id="inpDirRem" required="true" maxlength="60" value="#{paqueteMB.direccionRem}"/>
 
-                                <p:outputLabel value="Telefono(*):  " for="inpTelRem"  />
+                                <p:outputLabel value="Telefono:  " for="inpTelRem"  />
                                 <p:inputMask id="inpTelRem" mask="(999) 999-9999" rendered="true" value="#{paqueteMB.telefonoRem}"/>
 
-
                             </p:panelGrid>
-
 
                         </p:panel>
 
+                        <p:panel header="Datos Destinatario" >
 
-                        <p:panel header="Datos Destinatario">
+                            <p:panelGrid columns="2" style="width:300px; height:300px">
 
-                            <p:panelGrid columns="2">
-
-                                <p:outputLabel value="Nombre(*):  " for="inpNomDes"  />
+                                <p:outputLabel value="Nombre:  " for="inpNomDes"  />
                                 <p:inputText id="inpNomDes" required="true" maxlength="50" value="#{paqueteMB.nombreDes}" />
 
-                                <p:outputLabel value="Identificacion(*):  " for="inpIdDes"  />
+                                <p:outputLabel value="Identificacion:  " for="inpIdDes"  />
                                 <p:inputText id="inpIdDes" required="true" maxlength="10" value="#{paqueteMB.identificacionDes}"/>
 
-                                <p:outputLabel value="Ciudad(*):  " for="inpCiuDes"  />
+                                <p:outputLabel value="Ciudad:  " for="inpCiuDes"  />
                                 <p:inputText id="inpCiuDes" required="true" maxlength="50" value="#{paqueteMB.ciudadDes}"/>
+                                <p:outputLabel value="Direccion:  " for="address"  />
+                                <p:panelGrid columns="2">
 
-                                <p:outputLabel value="Direccion(*):  " for="inpDirDes"  />
-                                <p:inputText id="inpDirDes" required="true" maxlength="60" value="#{paqueteMB.direccionDes}" />
+                                    <p:inputText id="address" required="true" />
+                                    <p:commandButton icon="ui-icon-search" onclick="geocode()" type="button" update=":frmPaquete:inpCorDes" />
+                                </p:panelGrid>
 
-                                <p:outputLabel value="Telefono(*):  " for="inpTelDes"  />
+                                <p:outputLabel value="Telefono:  " for="inpTelDes"  />
                                 <p:inputMask id="inpTelDes" mask="(999) 999-9999" rendered="true" value="#{paqueteMB.telefonoDes}"/>
-
-                                <p:outputLabel value="Coordenadas(*):  " for="inpCorDes"  />
+                                <p:outputLabel value="Coordenadas:  " for="inpCorDes"  />
                                 <p:inputText id="inpCorDes" required="true" maxlength="60" disabled="true" value="#{paqueteMB.coordenadas}" />
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <p:panel header="Datos Paquete">
+                            <p:panelGrid columns="2" style="width:400px; height:300px">
+                                <p:outputLabel value="# Codigo:  " for="inpCodigo"  />
+                                <p:inputText id="inpCodigo" maxlength="50" value="#{paqueteMB.cod_paquete}" />
+
+                                <p:outputLabel value="# Guia:  " for="inpguia"  />
+                                <p:inputText id="inpguia" required="true" maxlength="50" value="#{paqueteMB.guia}" />
+
+                                <p:outputLabel value="Fecha de entrega: " for="calfechentre" />
+                                <p:calendar id="calfechentre"  showOn="button" value="#{paqueteMB.fecha_entrega}" />
+
+                                <p:outputLabel value="# Bodega:  " for="seloneBog"  />
+                                <p:selectOneMenu id="seloneBog" value="#{paqueteMB.bodegaSelected}" effect="fold" var="bod" >
+                                    <f:selectItem itemLabel="Seleccione" itemValue="-1" />
+                                    <f:selectItems value="#{paqueteMB.comboBodegas}" />
+                                </p:selectOneMenu>
 
 
                             </p:panelGrid>
 
-
                         </p:panel>
+
 
 
                         <p:panel header="Localizacion de coordenadas">
 
-                            <p:gmap id="gmap" center="41.381542, 2.122893" zoom="13" type="roadmap"  style="width:100%;height:400px" fitBounds="true"/>
+
+                            <p:gmap id="geoGmap" widgetVar="geoMap" center="#{paqueteMB.centerGeoMap}" zoom="14" type="ROADMAP" model="#{paqueteMB.geoModel}" style="width:100%;height:300px">
+                                <p:ajax event="geocode" listener="#{paqueteMB.onGeocode}" update="@this" />
+                            </p:gmap>
 
                         </p:panel>
 
@@ -111,10 +115,10 @@
 
                     <p:commandButton value="Guardar"
                                      icon="ui-icon-disk" 
-                                     actionListener="#{paqueteMB.guardarPaquete()}"/>
+                                     action="#{paqueteMB.guardarPaquete()}"/>
 
                     <p:commandButton value="Consultar"
-                                     icon="ui-icon-search" actionListener="#{paqueteMB.consultarPaquetes()}" onclick="PF('dlgconpaq').show();" update=":pnlPaquetes:dtPaquetes"/>  
+                                     icon="ui-icon-search" action="#{paqueteMB.consultarPaquetes()}"  onclick="PF('dlgconpaq').show();" />  
 
                     <p:commandButton value="Limpiar" 
                                      icon="ui-icon-trash"
@@ -125,69 +129,63 @@
 
             </h:form>
 
-
-
-            <p:dialog header="Consulta de paquetes" widgetVar="dlgconpaq" minHeight="100" modal="true">
-
-                <p:panel id="pnlPaquetes">
-                    <p:dataTable 
-                        id="dtPaquetes" 
-                        value="#{paqueteMB.lstPaqueteDTO}"
-                        var="varpaq"
-                        rowKey="#{varpaq.codPaquete}"
-                        selection=""
-                        paginator="true" 
-                        rowsPerPageTemplate="10,20,30,40,50"
-                        selectionMode="single" rows="5">
-
-                        <p:column headerText="Codigo">
-                            <p:outputLabel value="#{varpaq.codPaquete}" />
-                        </p:column>
-
-                        <p:column headerText="Guia">
-                            <p:outputLabel value="#{varpaq.guia}" />
-                        </p:column>
-
-                        <p:column headerText="Fecha Ingreso">
-                            <p:outputLabel value="#{varpaq.fecha_ingreso}" />
-                        </p:column>
-
-                        <p:column headerText="Fecha Entrega ">
-                            <p:outputLabel value="#{varpaq.fecha_entrega}" />
-                        </p:column>
-
-                        <p:column headerText="Nombre Remitente">
-                            <p:outputLabel value="#{varpaq.nombreRe}" />
-                        </p:column>
-
-                        <p:column headerText="Ciudad Remitente">
-                            <p:outputLabel value="#{varpaq.ciudadRe}" />
-                        </p:column>
-
-                        <p:column headerText="Nombre Detinatario">
-                            <p:outputLabel value="#{varpaq.nombreDe}" />
-                        </p:column>
-
-
-                        <p:column headerText="Ciudad Destinatario">
-                            <p:outputLabel value="#{varpaq.ciudadDe}" />
-                        </p:column>
-
-                        <p:column headerText="Acciones">
-                            <p:commandButton  icon="ui-icon-check" actionListener="#{paqueteMB.seleccionPaquete()}" ondblclick="PF('dlgconpaq').hide();" update=":frmPaquete">
-                                <f:setPropertyActionListener value="#{varpaq}" target="#{paqueteMB.paqueteSelected}"/>
-                            </p:commandButton>
-                        </p:column>
-
-                    </p:dataTable>
-
-                </p:panel>
-
-
-            </p:dialog>
-
-
         </f:view>
+
+        <p:dialog id="dlgPaquete" header="Consulta de paquetes" widgetVar="dlgconpaq" minHeight="50"  >
+
+            <p:panel id="pnlPaquetes">
+                <p:dataTable 
+                    id="dtPaquetes" 
+                    value="#{paqueteMB.lstPaqueteDTO}"
+                    var="paq"
+                    rowKey="#{paq.codPaquete}"
+                    selection="#{paqueteMB.paqueteSelected}"
+                    paginator="true" 
+                    rowsPerPageTemplate="10,20,30,40,50"
+                    selectionMode="single" rows="5">
+
+                    <p:column headerText="Codigo">
+                        <p:outputLabel value="#{paq.codPaquete}" />
+                    </p:column>
+
+                    <p:column headerText="Guia">
+                        <p:outputLabel value="#{paq.guia}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha Ingreso">
+                        <p:outputLabel value="#{paq.fecha_ingreso}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha Entrega ">
+                        <p:outputLabel value="#{paq.fecha_entrega}" />
+                    </p:column>
+
+                    <p:column headerText="Nombre Remitente">
+                        <p:outputLabel value="#{paq.nombreRe}" />
+                    </p:column>
+
+                    <p:column headerText="Ciudad Remitente">
+                        <p:outputLabel value="#{paq.ciudadRe}" />
+                    </p:column>
+
+                    <p:column headerText="Nombre Detinatario">
+                        <p:outputLabel value="#{paq.nombreDe}" />
+                    </p:column>
+
+
+                    <p:column headerText="Ciudad Destinatario">
+                        <p:outputLabel value="#{paq.ciudadDe}" />
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:panel>
+
+
+        </p:dialog>
+
+
+
     </ui:define>  
 </ui:composition>
 

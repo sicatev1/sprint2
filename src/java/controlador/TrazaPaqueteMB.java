@@ -56,11 +56,11 @@ public class TrazaPaqueteMB {
         listPaquetePorBodegaDTO = controlaTrazabilidadInterface.consultarTrazabilidadPorBodega(codigoBodega);
 
         if (listPaquetePorBodegaDTO != null && !listPaquetePorBodegaDTO.isEmpty()) {
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN,
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "Se encontraron paquetes asociados a la bodega", "");
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         } else {
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO,
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "No se encontraron paquetes asociados a la bodega", "");
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         }

@@ -97,8 +97,7 @@
                         <p:column headerText="Rol">
                             <p:outputLabel value="#{usuario.rol}" />
                         </p:column>
-
-
+               
                         <p:column headerText="Acciones">
                             <p:commandButton  value="Editar" icon="ui-icon-pencil" update=":frmUsuario:pnlUsuario">
                                 <f:setPropertyActionListener value="#{usuario}" target="#{usuarioMB.usuarioSelected}"/>

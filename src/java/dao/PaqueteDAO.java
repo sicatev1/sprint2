@@ -116,15 +116,18 @@ public class PaqueteDAO implements IPaqueteDAO {
         }
         return false;
     }
-
-    @Override
+    
     public List<PaquetesDTO> consultarPaqueteDTO() {
 
         List<PaquetesDTO> lstPaquete = new ArrayList();
 
         ResultSet rs = null;
         Statement s = null;
-        String sql = "SELECT P.IDPAQUETE,P.GUIA,P.FECHA_ENTREGA, P.FECHA_INGRESO, R.*, D.* FROM PAQUETES P, REMITENTES R, DESTINATARIOS D WHERE P.REMITENTE=R.IDREMITENTE AND P.DESTINATARIO=D.IDDESTINATARIO";
+        String sql = "SELECT P.IDPAQUETE,P.GUIA,P.FECHA_ENTREGA, P.FECHA_INGRESO, \n"
+                + "R.idremitente,R.nombre as nombrere, R.identificacion as identificacionre, R.direccion as direccionre, R.telefono as telefonore, R.ciudad as ciudadre, \n"
+                + "D.iddestinatario, D.nombre as nombrede, D.identificacion as identificacionde, D.direccion as direccionde, D.coordenadas, D.telefono as telefonode, D.ciudad as ciudadde\n"
+                + "FROM PAQUETES P, REMITENTES R, DESTINATARIOS D \n"
+                + "WHERE P.REMITENTE=R.IDREMITENTE ";
         try {
 
             System.out.println("consultando todos los paquetes : consultarPaqueteDTODB()");
@@ -132,9 +135,10 @@ public class PaqueteDAO implements IPaqueteDAO {
             s = ConexionSingleton.getInstancia().getConexion().createStatement();
             rs = s.executeQuery(sql);
 
+            String codPaquete;
             String guia;
             String fecha_entrega;
-            String fecha_salida;
+            String fecha_ingreso;
 
             Integer codigoRe;
             String nombreRe;
@@ -153,27 +157,30 @@ public class PaqueteDAO implements IPaqueteDAO {
 
             while (rs.next()) {
 
+                codPaquete=(rs.getInt("idpaquete"))+"";
                 guia = rs.getString("guia");
-                fecha_entrega = rs.getString("fecha_Entrega");
-                fecha_salida = rs.getString("fecha_Salida");
-                codigoRe = rs.getInt("idremitente");
-                nombreRe = rs.getString("nombre");
-                identificacionRe = rs.getInt("identificacion");
-                direccionRe = rs.getString("direccion");
-                telefonoRe = rs.getString("telefono");
-                ciudadRe = rs.getString("ciudad");
+                fecha_entrega = rs.getString("fecha_entrega");
+                fecha_ingreso = rs.getString("fecha_ingreso");
+                codigoRe= rs.getInt("idremitente");
+                nombreRe= rs.getString("nombrere");
+                identificacionRe= rs.getInt("identificacionre");
+                direccionRe= rs.getString("direccionre");
+                telefonoRe= rs.getString("telefonore");
+                ciudadRe= rs.getString("ciudadre");
+                
 
-                codigoDe = rs.getInt("iddestinatario");
-                nombreDe = rs.getString("nombre");
-                identificacionDe = rs.getInt("identificacion");
-                direccionDe = rs.getString("direccion");
-                telefonoDe = rs.getString("telefono");
-                ciudadDe = rs.getString("ciudad");
-                coordenadaDe = rs.getString("coordenadas");
+                codigoDe= rs.getInt("iddestinatario");
+                nombreDe= rs.getString("nombrede");
+                identificacionDe= rs.getInt("identificacionde");
+                direccionDe= rs.getString("direccionde");
+                telefonoDe= rs.getString("telefonode");
+                ciudadDe= rs.getString("ciudadde");
+                coordenadaDe= rs.getString("coordenadas");
 
                 System.out.println("Se recupero el registro con la guia " + guia);
 
-                PaquetesDTO paqueteDTO = new PaquetesDTO(guia, fecha_entrega, fecha_salida, codigoRe, nombreRe, identificacionRe, direccionRe, telefonoRe, ciudadRe, codigoDe, nombreDe, identificacionDe, direccionDe, telefonoDe, ciudadDe, coordenadaDe);
+                PaquetesDTO paqueteDTO = new PaquetesDTO(guia, fecha_entrega, fecha_ingreso, codigoRe, nombreRe, identificacionRe, direccionRe, telefonoRe, ciudadRe, codigoDe, nombreDe, identificacionDe, direccionDe, telefonoDe, ciudadDe, coordenadaDe);
+                paqueteDTO.setCodPaquete(Integer.parseInt(codPaquete));
                 lstPaquete.add(paqueteDTO);
 
             }
@@ -192,6 +199,7 @@ public class PaqueteDAO implements IPaqueteDAO {
                 Logger.getLogger(PaqueteDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
 
         return lstPaquete;
     }

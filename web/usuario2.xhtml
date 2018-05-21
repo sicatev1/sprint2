@@ -58,13 +58,19 @@
                         <p:commandButton value="Limpiar" 
                                          icon="ui-icon-trash" action="#{usuarioMB.limpiar()}" update=":frmUsuario:pnlUsuario"/>
 
-                        <h:form>
-                            <h:commandLink value="Sign In" action="../../inicio" />
 
-                        </h:form>
 
                     </p:panelGrid>
                 </p:panel>
+            </h:form>
+
+            <h:form>
+                <p:menu>
+                    <p:submenu>
+                        <p:menuitem value="Iniciar Sesion" 
+                                    icon="ui-icon-home" outcome="inicio" />
+                    </p:submenu>
+                </p:menu>
             </h:form>
 
             <p:separator />

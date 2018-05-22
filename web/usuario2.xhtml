@@ -47,6 +47,7 @@
                         <h:outputLabel value="Rol" for="inptRol"/>
                         <p:selectOneMenu id="inptRol" value="#{usuarioMB.usuarioSelected.rol}">
                             <f:selectItem itemLabel="Seleccione" itemValue="-1"/>
+                            <f:selectItem itemLabel="Administrador" itemValue="1"/>
                             <f:selectItem itemLabel="Transportador" itemValue="2"/>
                             <f:selectItem itemLabel="Usuario" itemValue="3"/>
                         </p:selectOneMenu>

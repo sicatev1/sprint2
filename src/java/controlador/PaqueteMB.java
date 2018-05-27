@@ -79,6 +79,7 @@ public class PaqueteMB {
     private MapModel geoModel;
     private String centerGeoMap = "3.4516, -76.5320";
     
+    private String coordenada;
 
     @PostConstruct
     public void init() {
@@ -202,7 +203,7 @@ public class PaqueteMB {
         
     }
     
-    public void onGeocode(GeocodeEvent  event) {
+    /*public void onGeocode(GeocodeEvent  event) {
         List<GeocodeResult> results = event.getResults();
          
         if (results != null && !results.isEmpty()) {
@@ -214,8 +215,15 @@ public class PaqueteMB {
                 geoModel.addOverlay(new Marker(result.getLatLng(), result.getAddress()));
             }
         }
+    }*/
+
+    public String getCoordenada() {
+        return coordenada;
     }
-    
+
+    public void setCoordenada(String coordenada) {
+        this.coordenada = coordenada;
+    }
     
 
     public String getCiudadDes() {

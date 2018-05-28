@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.embeddable.EJBContainer;
 import logicaNegocio.interfaces.IControlaBodega;
 import modelo.Bodega;
+import modelo.Usuario;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,21 +22,19 @@ import static org.junit.Assert.*;
  *
  * @author cristian gomez ruiz
  */
-public class ControlaBodegaTest {
+public class ControlaUsuarioTest {
 
-    public ControlaBodegaTest() {
+    public ControlaUsuarioTest() {
     }
 
-    /**
-     * Test of consultarDestinatarios method, of class ControlaBodega.
-     */
+
     @Test
-    public void testValidarConsultaBodega() throws Exception {
-        System.out.println("consultarBodegas");
-        ControlaBodega instance = new ControlaBodega();
-        List<Bodega> result = instance.consultarBodegas();
-        boolean hayBodegas = result.isEmpty();
-        assertEquals(false, hayBodegas);
+    public void testValidarConsultaUsuario() throws Exception {
+        System.out.println("consultarUsuarios");
+        ControlaUsuario instance = new ControlaUsuario();
+        List<Usuario> result = instance.consultarUsuario();
+        boolean hayUsuarios = result.isEmpty();
+        assertEquals(false, hayUsuarios);
     }
 
 
